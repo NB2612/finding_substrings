@@ -67,11 +67,23 @@ def main():
     args = parser.parse_args()
 
     # Получаем текст
-    if args.text:
+    if args.text is not None:  # <- корректная проверка
         text_lines = args.text.splitlines()
+    elif args.file is not None:
+        try:
+            with open(args.file, encoding="utf-8") as f:
+                text_lines = f.readlines()
+        except Exception as e:
+            print(f"Ошибка при открытии файла: {e}")
+            return
     else:
-        with open(args.file, encoding="utf-8") as f:
-            text_lines = f.readlines()
+        print("Ошибка: укажите -t <текст> или -f <файл>")
+        return
+
+    # Проверка полностью пустого текста
+    if len(text_lines) == 0:
+        print("Предупреждение: текст пустой — нечего искать.")
+        return
 
     # Ограничение по количеству выводимых строк
     text_lines = text_lines[:args.lines]
