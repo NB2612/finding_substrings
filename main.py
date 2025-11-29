@@ -1,13 +1,18 @@
 import argparse
-from typing import List, Union
+from typing import List, Union, Optional
 from termcolor import colored
 from itertools import cycle
 
 
 # Функция-заглушка для поиска.
 # Предполагается, что она импортирует и вызывает реальную функцию search.
-def search(text: str, sub_string: Union[str, List[str]], case_sensitivity=True, method="first", count=None,
-           algorithm="ak"):
+def search(text: str,
+           sub_string: Union[str, list[str]],
+           case_sensitivity: bool = False,
+           method: str='first',
+           count: Optional[int]=None,
+           algorithm: str='kmp'
+)-> Optional[Union[tuple[int, ...], dict[str, tuple[int, ...]]]]:
     # !!! Важно: убедитесь, что ваш файл search.py доступен
     # и содержит функцию def search(...)
     try:
@@ -88,18 +93,19 @@ def main():
     parser.add_argument("-s", "--substrings", type=str, nargs="+",
                         required=True, help="Подстроки для поиска (разделяются пробелами или в кавычках)")
     parser.add_argument("-a", "--algorithm", type=str,
-                        choices=["kmp", "bm", "ak"], default="ak", help="Алгоритм поиска")
+                        choices=["kmp", "bm", "ak"], default="kmp", help="Алгоритм поиска")
     parser.add_argument("-c", "--case", action="store_false",
                         dest='case_sensitivity',  # Меняем dest для логики!
                         help="Игнорировать регистр (по умолчанию учитывается)")
     parser.add_argument("-m", "--method", type=str, choices=["first", "last"],
                         default="first", help="Метод поиска (first/last/all)")  # Добавил 'all'
-    parser.add_argument("-n", "--count", type=int, default=None, help="Максимальное количество совпадений на подстроку")
+    parser.add_argument("-n", "--count", type=int, default=10, help="Максимальное количество совпадений на подстроку")
     parser.add_argument("-l", "--lines", type=int, default=10,
                         help="Максимальное количество строк для вывода")
 
     args = parser.parse_args()
 
+    print(f"{args}")
     # --- 1. Получение текста из аргументов или файла ---
     text_lines: List[str] = []
 
@@ -153,7 +159,12 @@ def main():
     # По умолчанию search ожидает `case_sensitivity=True`, поэтому меняем логику:
     # args.case_sensitivity: True (если -c не указан, т.е. учитывать)
     # args.case_sensitivity: False (если -c указан, т.е. игнорировать)
-
+    print(f"text={text},\n\
+        sub_string={sub_list},  # sub_list - это List[str]\n\
+        case_sensitivity={args.case_sensitivity},  # Использование нового dest\n\
+        method={args.method},\n\
+        count={args.count},\n\
+        algorithm={args.algorithm}")
     result = search(
         text=text,
         sub_string=sub_list,  # sub_list - это List[str]
