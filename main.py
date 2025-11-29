@@ -105,7 +105,10 @@ def main():
 
     args = parser.parse_args()
 
-    print(f"{args}")
+    # ----- Debug --------
+    #print(f"{args}")
+    # ----- End Debug --------
+
     # --- 1. Получение текста из аргументов или файла ---
     text_lines: List[str] = []
 
@@ -159,12 +162,18 @@ def main():
     # По умолчанию search ожидает `case_sensitivity=True`, поэтому меняем логику:
     # args.case_sensitivity: True (если -c не указан, т.е. учитывать)
     # args.case_sensitivity: False (если -c указан, т.е. игнорировать)
-    print(f"text={text},\n\
-        sub_string={sub_list},  # sub_list - это List[str]\n\
-        case_sensitivity={args.case_sensitivity},  # Использование нового dest\n\
-        method={args.method},\n\
-        count={args.count},\n\
-        algorithm={args.algorithm}")
+
+
+
+    #----- Debug --------
+    #print(f"text={text},\n\
+    #    sub_string={sub_list},  # sub_list - это List[str]\n\
+    #    case_sensitivity={args.case_sensitivity},  # Использование нового dest\n\
+    #    method={args.method},\n\
+    #    count={args.count},\n\
+    #    algorithm={args.algorithm}")
+    # ----- End Debug --------
+
     result = search(
         text=text,
         sub_string=sub_list,  # sub_list - это List[str]
