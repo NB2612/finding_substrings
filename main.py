@@ -122,8 +122,9 @@ def main():
     text_lines = text_lines[:args.lines]
 
     # Проверка на пустой текст
-    if not text_lines and args.text is None:  # Если текст не был передан и файл пуст
-        print("Предупреждение: текст для поиска пуст.")
+    # Если текст пустой (text_lines == []) ИЛИ состоит только из пробелов
+    if not text_lines or all(line.strip() == "" for line in text_lines):
+        print("Ошибка: текст для поиска пуст или состоит только из пробелов.")
         return
 
     # --- 2. Обработка подстрок ---
